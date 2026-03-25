@@ -18,17 +18,17 @@ public class PalindromeChecker {
 
         // UC2: Hardcoded Palindrome Check (Character Comparison)
         String word1 = "madam";
-        boolean isPalindrome = true;
+        boolean isPalindrome1 = true;
 
         for (int i = 0; i < word1.length() / 2; i++) {
             if (word1.charAt(i) != word1.charAt(word1.length() - 1 - i)) {
-                isPalindrome = false;
+                isPalindrome1 = false;
                 break;
             }
         }
 
-        if (isPalindrome) {
-            System.out.println(word1 + " is a Palindrome (Checked using character comparison).");
+        if (isPalindrome1) {
+            System.out.println(word1 + " is a Palindrome (Character comparison).");
         } else {
             System.out.println(word1 + " is NOT a Palindrome.");
         }
@@ -37,16 +37,40 @@ public class PalindromeChecker {
         String word2 = "level";
         String reversed = "";
 
-        // Reverse string using for loop
         for (int i = word2.length() - 1; i >= 0; i--) {
-            reversed = reversed + word2.charAt(i); // String concatenation
+            reversed = reversed + word2.charAt(i);
         }
 
-        // Compare original and reversed using equals()
         if (word2.equals(reversed)) {
-            System.out.println(word2 + " is a Palindrome (Checked using string reverse).");
+            System.out.println(word2 + " is a Palindrome (String reverse).");
         } else {
             System.out.println(word2 + " is NOT a Palindrome.");
+        }
+
+        // UC4: Character Array Based Palindrome Check
+        String word3 = "radar";
+
+        // Convert string to char array
+        char[] characters = word3.toCharArray();
+
+        int start = 0;
+        int end = characters.length - 1;
+        boolean isPalindrome2 = true;
+
+        // Two-pointer technique
+        while (start < end) {
+            if (characters[start] != characters[end]) {
+                isPalindrome2 = false;
+                break;
+            }
+            start++;
+            end--;
+        }
+
+        if (isPalindrome2) {
+            System.out.println(word3 + " is a Palindrome (char[] two-pointer).");
+        } else {
+            System.out.println(word3 + " is NOT a Palindrome.");
         }
 
         System.out.println("Program exited successfully.");

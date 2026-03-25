@@ -1,8 +1,12 @@
 /**
  * PalindromeChecker Application
  * Version: 1.0
- * UC11: Object-Oriented Palindrome Service
+ * UC12: Strategy Pattern Implementation
  */
+
+import java.util.Stack;
+import java.util.Deque;
+import java.util.ArrayDeque;
 
 public class PalindromeChecker {
 
@@ -16,47 +20,90 @@ public class PalindromeChecker {
         System.out.println("Version: " + VERSION);
         System.out.println("======================================");
 
-        String input = "Madam";
+        String input = "level";
 
-        // Using encapsulated service
-        PalindromeService service = new PalindromeService();
-        boolean result = service.checkPalindrome(input);
+        // Injecting strategy at runtime
+        PalindromeStrategy strategy;
+
+        // Change strategy here dynamically
+        strategy = new StackStrategy();
+        // strategy = new DequeStrategy();
+
+        PalindromeContext context = new PalindromeContext(strategy);
+
+        boolean result = context.executeStrategy(input);
 
         System.out.println(input + (result
-                ? " is a Palindrome (OOP Service)."
+                ? " is a Palindrome (Strategy Pattern)."
                 : " is NOT a Palindrome."));
 
         System.out.println("Program exited successfully.");
     }
 }
 
-/**
- * PalindromeService
- * Encapsulates palindrome checking logic.
- * Follows Single Responsibility Principle.
- */
-class PalindromeService {
+/* Strategy Interface */
+interface PalindromeStrategy {
+    boolean check(String input);
+}
 
-    // Public method exposed to clients
-    public boolean checkPalindrome(String input) {
+/* Context Class */
+class PalindromeContext {
 
-        if (input == null) {
-            return false;
+    private PalindromeStrategy strategy;
+
+    public PalindromeContext(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean executeStrategy(String input) {
+        return strategy.check(input);
+    }
+}
+
+/* Stack-Based Strategy */
+class StackStrategy implements PalindromeStrategy {
+
+    @Override
+    public boolean check(String input) {
+
+        if (input == null) return false;
+
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : normalized.toCharArray()) {
+            stack.push(ch);
         }
 
-        // Normalize input (case-insensitive, ignore spaces)
-        String normalized = input.replaceAll("\\s+", "").toLowerCase();
-
-        // Internal logic using two-pointer (Array-based access)
-        int start = 0;
-        int end = normalized.length() - 1;
-
-        while (start < end) {
-            if (normalized.charAt(start) != normalized.charAt(end)) {
+        for (int i = 0; i < normalized.length(); i++) {
+            if (normalized.charAt(i) != stack.pop()) {
                 return false;
             }
-            start++;
-            end--;
+        }
+
+        return true;
+    }
+}
+
+/* Deque-Based Strategy */
+class DequeStrategy implements PalindromeStrategy {
+
+    @Override
+    public boolean check(String input) {
+
+        if (input == null) return false;
+
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char ch : normalized.toCharArray()) {
+            deque.addLast(ch);
+        }
+
+        while (deque.size() > 1) {
+            if (!deque.removeFirst().equals(deque.removeLast())) {
+                return false;
+            }
         }
 
         return true;

@@ -1,29 +1,39 @@
 /**
  * PalindromeChecker Application
  * Version: 1.0
- * Description: Console-based application to validate palindromes.
  */
 
 public class PalindromeChecker {
 
-    // Application constants
     private static final String APP_NAME = "PalindromeChecker App";
     private static final String VERSION = "1.0";
 
-    /**
-     * Main method - Entry point of the application
-     * JVM invokes this method automatically.
-     */
     public static void main(String[] args) {
 
-        // Display Welcome Message
+        // UC1: Welcome Message
         System.out.println("======================================");
         System.out.println("Welcome to " + APP_NAME);
         System.out.println("Version: " + VERSION);
         System.out.println("======================================");
-        System.out.println("Application started successfully.");
-        System.out.println();
 
-        // Program continues to next use case (future implementation)
+        // UC2: Hardcoded Palindrome Check
+        String word = "madam"; // String literal
+
+        boolean isPalindrome = true;
+
+        for (int i = 0; i < word.length() / 2; i++) {
+            if (word.charAt(i) != word.charAt(word.length() - 1 - i)) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        if (isPalindrome) {
+            System.out.println(word + " is a Palindrome.");
+        } else {
+            System.out.println(word + " is NOT a Palindrome.");
+        }
+
+        System.out.println("Program exited successfully.");
     }
 }

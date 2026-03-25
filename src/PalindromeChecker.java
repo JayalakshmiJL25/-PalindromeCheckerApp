@@ -4,6 +4,8 @@
  */
 
 import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class PalindromeChecker {
 
@@ -18,39 +20,33 @@ public class PalindromeChecker {
         System.out.println("Version: " + VERSION);
         System.out.println("======================================");
 
-        // UC2: Hardcoded Palindrome Check (Character Comparison)
+        // UC2: Character Comparison
         String word1 = "madam";
         boolean isPalindrome1 = true;
-
         for (int i = 0; i < word1.length() / 2; i++) {
             if (word1.charAt(i) != word1.charAt(word1.length() - 1 - i)) {
                 isPalindrome1 = false;
                 break;
             }
         }
-
         System.out.println(word1 + (isPalindrome1 ? " is a Palindrome (Character comparison)."
                 : " is NOT a Palindrome."));
 
-        // UC3: Palindrome Check Using String Reverse
+        // UC3: String Reverse
         String word2 = "level";
         String reversed = "";
-
         for (int i = word2.length() - 1; i >= 0; i--) {
             reversed = reversed + word2.charAt(i);
         }
-
         System.out.println(word2 + (word2.equals(reversed)
                 ? " is a Palindrome (String reverse)."
                 : " is NOT a Palindrome."));
 
-        // UC4: Character Array Based Palindrome Check
+        // UC4: char[] Two-Pointer
         String word3 = "radar";
         char[] characters = word3.toCharArray();
-        int start = 0;
-        int end = characters.length - 1;
+        int start = 0, end = characters.length - 1;
         boolean isPalindrome2 = true;
-
         while (start < end) {
             if (characters[start] != characters[end]) {
                 isPalindrome2 = false;
@@ -59,32 +55,50 @@ public class PalindromeChecker {
             start++;
             end--;
         }
-
         System.out.println(word3 + (isPalindrome2
                 ? " is a Palindrome (char[] two-pointer)."
                 : " is NOT a Palindrome."));
 
-        // UC5: Stack-Based Palindrome Check
+        // UC5: Stack-Based
         String word4 = "civic";
         Stack<Character> stack = new Stack<>();
-
-        // Push characters into stack
-        for (int i = 0; i < word4.length(); i++) {
-            stack.push(word4.charAt(i));
+        for (char ch : word4.toCharArray()) {
+            stack.push(ch);
         }
-
         boolean isPalindrome3 = true;
-
-        // Pop and compare
         for (int i = 0; i < word4.length(); i++) {
             if (word4.charAt(i) != stack.pop()) {
                 isPalindrome3 = false;
                 break;
             }
         }
-
         System.out.println(word4 + (isPalindrome3
                 ? " is a Palindrome (Stack-based)."
+                : " is NOT a Palindrome."));
+
+        // UC6: Queue + Stack Based
+        String word5 = "refer";
+        Stack<Character> stack2 = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
+
+        // Enqueue and Push
+        for (char ch : word5.toCharArray()) {
+            stack2.push(ch);      // LIFO
+            queue.add(ch);       // FIFO
+        }
+
+        boolean isPalindrome4 = true;
+
+        // Compare dequeue vs pop
+        while (!stack2.isEmpty()) {
+            if (!queue.remove().equals(stack2.pop())) {
+                isPalindrome4 = false;
+                break;
+            }
+        }
+
+        System.out.println(word5 + (isPalindrome4
+                ? " is a Palindrome (Queue + Stack)."
                 : " is NOT a Palindrome."));
 
         System.out.println("Program exited successfully.");

@@ -1,6 +1,7 @@
 /**
  * PalindromeChecker Application
  * Version: 1.0
+ * UC11: Object-Oriented Palindrome Service
  */
 
 public class PalindromeChecker {
@@ -15,30 +16,49 @@ public class PalindromeChecker {
         System.out.println("Version: " + VERSION);
         System.out.println("======================================");
 
-        // UC10: Case-Insensitive & Space-Ignored Palindrome Check
-        String input = "A man a plan a canal Panama";
+        String input = "Madam";
 
-        // Step 1: Normalize string (remove spaces & convert to lowercase)
+        // Using encapsulated service
+        PalindromeService service = new PalindromeService();
+        boolean result = service.checkPalindrome(input);
+
+        System.out.println(input + (result
+                ? " is a Palindrome (OOP Service)."
+                : " is NOT a Palindrome."));
+
+        System.out.println("Program exited successfully.");
+    }
+}
+
+/**
+ * PalindromeService
+ * Encapsulates palindrome checking logic.
+ * Follows Single Responsibility Principle.
+ */
+class PalindromeService {
+
+    // Public method exposed to clients
+    public boolean checkPalindrome(String input) {
+
+        if (input == null) {
+            return false;
+        }
+
+        // Normalize input (case-insensitive, ignore spaces)
         String normalized = input.replaceAll("\\s+", "").toLowerCase();
 
-        // Step 2: Apply palindrome logic (two-pointer approach)
-        boolean isPalindrome = true;
+        // Internal logic using two-pointer (Array-based access)
         int start = 0;
         int end = normalized.length() - 1;
 
         while (start < end) {
             if (normalized.charAt(start) != normalized.charAt(end)) {
-                isPalindrome = false;
-                break;
+                return false;
             }
             start++;
             end--;
         }
 
-        System.out.println("\"" + input + "\"" + (isPalindrome
-                ? " is a Palindrome (Case-Insensitive & Space-Ignored)."
-                : " is NOT a Palindrome."));
-
-        System.out.println("Program exited successfully.");
+        return true;
     }
 }

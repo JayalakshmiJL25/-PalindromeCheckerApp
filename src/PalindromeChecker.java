@@ -6,6 +6,8 @@
 import java.util.Stack;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Deque;
+import java.util.ArrayDeque;
 
 public class PalindromeChecker {
 
@@ -80,25 +82,42 @@ public class PalindromeChecker {
         String word5 = "refer";
         Stack<Character> stack2 = new Stack<>();
         Queue<Character> queue = new LinkedList<>();
-
-        // Enqueue and Push
         for (char ch : word5.toCharArray()) {
-            stack2.push(ch);      // LIFO
-            queue.add(ch);       // FIFO
+            stack2.push(ch);
+            queue.add(ch);
         }
-
         boolean isPalindrome4 = true;
-
-        // Compare dequeue vs pop
         while (!stack2.isEmpty()) {
             if (!queue.remove().equals(stack2.pop())) {
                 isPalindrome4 = false;
                 break;
             }
         }
-
         System.out.println(word5 + (isPalindrome4
                 ? " is a Palindrome (Queue + Stack)."
+                : " is NOT a Palindrome."));
+
+        // UC7: Deque-Based Optimized Palindrome Check
+        String word6 = "noon";
+        Deque<Character> deque = new ArrayDeque<>();
+
+        // Insert characters into deque
+        for (char ch : word6.toCharArray()) {
+            deque.addLast(ch);
+        }
+
+        boolean isPalindrome5 = true;
+
+        // Compare front and rear
+        while (deque.size() > 1) {
+            if (!deque.removeFirst().equals(deque.removeLast())) {
+                isPalindrome5 = false;
+                break;
+            }
+        }
+
+        System.out.println(word6 + (isPalindrome5
+                ? " is a Palindrome (Deque-based optimized)."
                 : " is NOT a Palindrome."));
 
         System.out.println("Program exited successfully.");

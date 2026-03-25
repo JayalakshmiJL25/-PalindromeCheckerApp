@@ -3,6 +3,8 @@
  * Version: 1.0
  */
 
+import java.util.Stack;
+
 public class PalindromeChecker {
 
     private static final String APP_NAME = "PalindromeChecker App";
@@ -27,11 +29,8 @@ public class PalindromeChecker {
             }
         }
 
-        if (isPalindrome1) {
-            System.out.println(word1 + " is a Palindrome (Character comparison).");
-        } else {
-            System.out.println(word1 + " is NOT a Palindrome.");
-        }
+        System.out.println(word1 + (isPalindrome1 ? " is a Palindrome (Character comparison)."
+                : " is NOT a Palindrome."));
 
         // UC3: Palindrome Check Using String Reverse
         String word2 = "level";
@@ -41,23 +40,17 @@ public class PalindromeChecker {
             reversed = reversed + word2.charAt(i);
         }
 
-        if (word2.equals(reversed)) {
-            System.out.println(word2 + " is a Palindrome (String reverse).");
-        } else {
-            System.out.println(word2 + " is NOT a Palindrome.");
-        }
+        System.out.println(word2 + (word2.equals(reversed)
+                ? " is a Palindrome (String reverse)."
+                : " is NOT a Palindrome."));
 
         // UC4: Character Array Based Palindrome Check
         String word3 = "radar";
-
-        // Convert string to char array
         char[] characters = word3.toCharArray();
-
         int start = 0;
         int end = characters.length - 1;
         boolean isPalindrome2 = true;
 
-        // Two-pointer technique
         while (start < end) {
             if (characters[start] != characters[end]) {
                 isPalindrome2 = false;
@@ -67,11 +60,32 @@ public class PalindromeChecker {
             end--;
         }
 
-        if (isPalindrome2) {
-            System.out.println(word3 + " is a Palindrome (char[] two-pointer).");
-        } else {
-            System.out.println(word3 + " is NOT a Palindrome.");
+        System.out.println(word3 + (isPalindrome2
+                ? " is a Palindrome (char[] two-pointer)."
+                : " is NOT a Palindrome."));
+
+        // UC5: Stack-Based Palindrome Check
+        String word4 = "civic";
+        Stack<Character> stack = new Stack<>();
+
+        // Push characters into stack
+        for (int i = 0; i < word4.length(); i++) {
+            stack.push(word4.charAt(i));
         }
+
+        boolean isPalindrome3 = true;
+
+        // Pop and compare
+        for (int i = 0; i < word4.length(); i++) {
+            if (word4.charAt(i) != stack.pop()) {
+                isPalindrome3 = false;
+                break;
+            }
+        }
+
+        System.out.println(word4 + (isPalindrome3
+                ? " is a Palindrome (Stack-based)."
+                : " is NOT a Palindrome."));
 
         System.out.println("Program exited successfully.");
     }

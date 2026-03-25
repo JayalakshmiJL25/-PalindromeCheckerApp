@@ -1,7 +1,7 @@
 /**
  * PalindromeChecker Application
  * Version: 1.0
- * UC12: Strategy Pattern Implementation
+ * UC13: Performance Comparison
  */
 
 import java.util.Stack;
@@ -20,24 +20,38 @@ public class PalindromeChecker {
         System.out.println("Version: " + VERSION);
         System.out.println("======================================");
 
-        String input = "level";
+        String input = "A man a plan a canal Panama";
 
-        // Injecting strategy at runtime
-        PalindromeStrategy strategy;
+        // Stack Strategy
+        PalindromeStrategy stackStrategy = new StackStrategy();
+        long startStack = System.nanoTime();
+        boolean stackResult = stackStrategy.check(input);
+        long endStack = System.nanoTime();
 
-        // Change strategy here dynamically
-        strategy = new StackStrategy();
-        // strategy = new DequeStrategy();
+        // Deque Strategy
+        PalindromeStrategy dequeStrategy = new DequeStrategy();
+        long startDeque = System.nanoTime();
+        boolean dequeResult = dequeStrategy.check(input);
+        long endDeque = System.nanoTime();
 
-        PalindromeContext context = new PalindromeContext(strategy);
+        // Two-Pointer Strategy
+        PalindromeStrategy twoPointerStrategy = new TwoPointerStrategy();
+        long startTwoPointer = System.nanoTime();
+        boolean twoPointerResult = twoPointerStrategy.check(input);
+        long endTwoPointer = System.nanoTime();
 
-        boolean result = context.executeStrategy(input);
+        System.out.println("Input: \"" + input + "\"\n");
 
-        System.out.println(input + (result
-                ? " is a Palindrome (Strategy Pattern)."
-                : " is NOT a Palindrome."));
+        System.out.println("Stack Strategy Result: " + stackResult +
+                " | Time: " + (endStack - startStack) + " ns");
 
-        System.out.println("Program exited successfully.");
+        System.out.println("Deque Strategy Result: " + dequeResult +
+                " | Time: " + (endDeque - startDeque) + " ns");
+
+        System.out.println("Two-Pointer Strategy Result: " + twoPointerResult +
+                " | Time: " + (endTwoPointer - startTwoPointer) + " ns");
+
+        System.out.println("\nProgram exited successfully.");
     }
 }
 
@@ -46,26 +60,11 @@ interface PalindromeStrategy {
     boolean check(String input);
 }
 
-/* Context Class */
-class PalindromeContext {
-
-    private PalindromeStrategy strategy;
-
-    public PalindromeContext(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean executeStrategy(String input) {
-        return strategy.check(input);
-    }
-}
-
 /* Stack-Based Strategy */
 class StackStrategy implements PalindromeStrategy {
 
     @Override
     public boolean check(String input) {
-
         if (input == null) return false;
 
         String normalized = input.replaceAll("\\s+", "").toLowerCase();
@@ -90,7 +89,6 @@ class DequeStrategy implements PalindromeStrategy {
 
     @Override
     public boolean check(String input) {
-
         if (input == null) return false;
 
         String normalized = input.replaceAll("\\s+", "").toLowerCase();
@@ -104,6 +102,29 @@ class DequeStrategy implements PalindromeStrategy {
             if (!deque.removeFirst().equals(deque.removeLast())) {
                 return false;
             }
+        }
+
+        return true;
+    }
+}
+
+/* Two-Pointer Strategy */
+class TwoPointerStrategy implements PalindromeStrategy {
+
+    @Override
+    public boolean check(String input) {
+        if (input == null) return false;
+
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+        int start = 0;
+        int end = normalized.length() - 1;
+
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
         }
 
         return true;

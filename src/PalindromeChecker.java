@@ -15,32 +15,30 @@ public class PalindromeChecker {
         System.out.println("Version: " + VERSION);
         System.out.println("======================================");
 
-        // UC9: Recursive Palindrome Check
-        String word = "racecar";
+        // UC10: Case-Insensitive & Space-Ignored Palindrome Check
+        String input = "A man a plan a canal Panama";
 
-        boolean isPalindrome = isPalindromeRecursive(word, 0, word.length() - 1);
+        // Step 1: Normalize string (remove spaces & convert to lowercase)
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
 
-        System.out.println(word + (isPalindrome
-                ? " is a Palindrome (Recursive)."
+        // Step 2: Apply palindrome logic (two-pointer approach)
+        boolean isPalindrome = true;
+        int start = 0;
+        int end = normalized.length() - 1;
+
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
+                isPalindrome = false;
+                break;
+            }
+            start++;
+            end--;
+        }
+
+        System.out.println("\"" + input + "\"" + (isPalindrome
+                ? " is a Palindrome (Case-Insensitive & Space-Ignored)."
                 : " is NOT a Palindrome."));
 
         System.out.println("Program exited successfully.");
-    }
-
-    // Recursive method
-    public static boolean isPalindromeRecursive(String str, int start, int end) {
-
-        // Base Condition: If pointers cross or meet
-        if (start >= end) {
-            return true;
-        }
-
-        // If characters don't match
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        // Recursive call (smaller subproblem)
-        return isPalindromeRecursive(str, start + 1, end - 1);
     }
 }
